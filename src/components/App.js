@@ -52,7 +52,7 @@ const App = () => {
   );
 
   // Handle marking a plant as sold out
-  const markSoldOut = async (id) => {
+  const inStock = async (id) => {
     try {
       const plant = plants.find((p) => p.id === id);
       const updatedPlant = {
@@ -106,8 +106,8 @@ const App = () => {
             <h3>{plant.name}</h3>
             <img src={plant.image} alt={plant.name} width="100" />
             <p>Price: ${plant.price}</p>
-            <button onClick={() => markSoldOut(plant.id)}>
-              {plant.soldOut ? 'Sold Out' : 'Mark as Sold Out'}
+            <button onClick={() => inStock(plant.id)}>
+              {plant.soldOut ? 'Sold Out' : 'In Stock'}
             </button>
             <button onClick={() => deletePlant(plant.id)}>Delete</button>
           </li>
