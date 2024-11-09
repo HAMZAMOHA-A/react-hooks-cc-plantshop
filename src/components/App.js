@@ -55,7 +55,12 @@ const App = () => {
   const markSoldOut = async (id) => {
     try {
       const plant = plants.find((p) => p.id === id);
-      const updatedPlant = { ...plant, soldOut: true };
+      const updatedPlant = {
+        ...plant,
+        inStock: !plant.inStock,  // Toggle inStock (true/false)
+        soldOut: !plant.soldOut,  // Optionally toggle soldOut as well
+      };
+
       await fetch(`http://localhost:6001/plants/${id}`, {
         method: 'PATCH',
         headers: {
@@ -63,9 +68,10 @@ const App = () => {
         },
         body: JSON.stringify(updatedPlant),
       });
+
       setPlants(plants.map(p => (p.id === id ? updatedPlant : p)));
     } catch (error) {
-      console.error('Error marking plant as sold out:', error);
+      console.error('Error updating plant stock:', error);
     }
   };
 
