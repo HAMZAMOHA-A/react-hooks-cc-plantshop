@@ -1,18 +1,38 @@
-import React from "react";
+import React, { useState } from 'react';
 
-function PlantCard() {
+const PlantCard = ({ plant, handleSoldOut, handleDelete }) => {
+  const [price, setPrice] = useState(plant.price);
+
+  // Update the price of the plant
+  const handlePriceChange = (e) => {
+    const newPrice = e.target.value;
+    setPrice(newPrice);
+    fetch(`http://localhost:6001/plants/${plant.id}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ price: newPrice }),
+    });
+  };
+
   return (
-    <li className="card" data-testid="plant-item">
-      <img src={"https://via.placeholder.com/400"} alt={"plant name"} />
-      <h4>{"plant name"}</h4>
-      <p>Price: {"plant price"}</p>
-      {true ? (
-        <button className="primary">In Stock</button>
-      ) : (
-        <button>Out of Stock</button>
-      )}
-    </li>
+    <div className="plant-card">
+      <img src={plant.image} alt={plant.name} />
+      <h3>{plant.name}</h3>
+      <p>Price: ${price}</p>
+      <input
+        type="number"
+        value={price}
+        onChange={handlePriceChange}
+        placeholder="Update price"
+      />
+      <button onClick={() => handleSoldOut(plant.id)}>
+        Mark as Sold Out
+      </button>
+      <button onClick={() => handleDelete(plant.id)}>
+        Delete
+      </button>
+    </div>
   );
-}
+};
 
 export default PlantCard;
